@@ -1,2 +1,2 @@
 # Chapter3
-## Unherited Model
+## Inherited Model
