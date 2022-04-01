@@ -47,25 +47,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Key _textKey = const ValueKey<String?>(null);
   String title = "Tap the Screen";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(ApiProvider.of(context).api.dateandTime ??
+            "No date time available"),
       ),
       body: Center(
           child: GestureDetector(
-        onTap: () {
+        onTap: () async {
+          final api = ApiProvider.of(context).api;
+          final dateAndTime = await api.getDateAndTime();
           setState(() {
-            title = DateTime.now().toString();
+            _textKey = ValueKey(dateAndTime);
           });
         },
-        child: Container(
-          color: Colors.white,
-          child: Text(
-            'Title update',
-            style: Theme.of(context).textTheme.headline4,
+        child: SizedBox.expand(
+          child: Container(
+            color: Colors.white,
+            child: DateTimeWidget(
+              key: _textKey,
+            ),
           ),
         ),
       )),
